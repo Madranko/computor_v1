@@ -7,11 +7,11 @@ import parser
 
 if (len(sys.argv) == 2) :
 
-    
+    parser = parser.Parser(sys.argv[1])
     try:
-        parser = parser.Parser(sys.argv[1])
-    except expression as identifier:
-        pass
+        parser.parseLine()
+    except Exception as error:
+        print (error)
 
 
 
