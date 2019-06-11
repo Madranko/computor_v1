@@ -1,3 +1,0 @@
-class Term :
-    coefficient
-    power
