@@ -24,9 +24,10 @@ class Computor:
     def makeReducedForm(self):
         self.addEqualPowers()
         for token in self.equation:
-            value = self.makeReadableValue(token['value'])
-            power = self.makeReadablePower(token['power'])
-            self.reducedForm += value + power
+            member = self.readableMember(token)
+            # value = self.makeReadableValue(token['value'])
+            # power = self.makeReadablePower(token['power'])
+            self.reducedForm += member
         self.findPolynomialDegree()
         self.writeCoefficients()
         self.formatReducedForm()
@@ -60,18 +61,18 @@ class Computor:
             self.polynomialDegree = 0
         return self.polynomialDegree
 
-
-    def makeReadableValue(self, intVal):
-        return str(intVal) if intVal <= 0 else '+' + str(intVal)
-
-    def makeReadablePower(self, intPower):
-        if intPower == 0:
-            power = ''
-        elif intPower == 1:
-            power = '*X'
+    def readableMember(self, token):
+        if token['power']:
+            power = 'X' if token['power'] == 1 else 'X^' + str(token['power'])
+            if token['value'] == -1:
+                value = '-'
+            elif token['value'] == 1:
+                value = '+'
+            else:
+               value = str(token['value']) + '*' if token['value'] <= 0 else '+' + str(token['value']) + '*'
+            return value + power
         else:
-            power = '*X^' + str(intPower)
-        return power
+            return str(token['value']) if token['value'] <= 0 else '+' + str(token['value'])
 
     def formatReducedForm(self):
         if self.reducedForm and self.polynomialDegree:
@@ -111,7 +112,7 @@ class Computor:
                 self.solutions['first'] = self.calcSolutionByDiscriminant(-1)
                 self.solutions['second'] = self.calcSolutionByDiscriminant(1)
             else:
-                self.solutions['comment'] = 'Discriminant is strictly negative, thee are no solutions:'
+                self.solutions['comment'] = 'Discriminant is strictly negative, thee are no solutions'
         else:
             if self.polynomialDegree:
                 self.solutions['comment'] = 'The solution is:'
