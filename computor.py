@@ -103,7 +103,7 @@ class Computor:
         self.coefficients['c'] = 0 if not c else c[0]['value']
 
     def findSolutions(self):
-        if self.discriminant != None:
+        if self.discriminant is not None:
             if self.discriminant >= 0:
                 if self.discriminant > 0:
                     self.solutions['comment'] = 'Discriminant is strictly positive, the two solutions are:'
@@ -112,7 +112,9 @@ class Computor:
                 self.solutions['first'] = self.calcSolutionByDiscriminant(-1)
                 self.solutions['second'] = self.calcSolutionByDiscriminant(1)
             else:
-                self.solutions['comment'] = 'Discriminant is strictly negative, thee are no solutions'
+                self.solutions['comment'] = 'Discriminant is strictly negative, the two complex solutions are:'
+                self.solutions['first'] = self.calcComplexSolutions(-1)
+                self.solutions['second'] = self.calcComplexSolutions(1)
         else:
             if self.polynomialDegree:
                 self.solutions['comment'] = 'The solution is:'
@@ -129,6 +131,21 @@ class Computor:
     def calculateOneSolution(self):
         result = self.coefficients['c'] / (-1 * self.coefficients['b'])
         return result
+
+    def calcComplexSolutions(self, discrCoefficient):
+        denominator = 2 * self.coefficients['a']
+        numerator1 = -1 * self.coefficients['b']
+        numerator2 = discrCoefficient * math.sqrt(self.discriminant * (-1))
+        resultLeft = str(numerator1 / denominator)
+        resultRight = numerator2 / denominator
+        if resultRight == 1:
+            resultRight = '+i'
+        elif resultRight == -1:
+            resultRight = '-i'
+        else:
+            resultRight = str(resultRight) + '*i' if resultRight < 0 else '+' + str(resultRight) + '*i'
+        return resultLeft + resultRight
+
 
 
 
